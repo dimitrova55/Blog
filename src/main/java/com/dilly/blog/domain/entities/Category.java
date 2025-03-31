@@ -3,6 +3,8 @@ package com.dilly.blog.domain.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -21,6 +23,12 @@ public class Category {
 
     @Column(nullable = false, unique = true)
     private String name;
+
+    /*
+     * Many posts can be from the same category.
+     * */
+    @OneToMany(mappedBy = "category")
+    private List<Post> posts = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {
