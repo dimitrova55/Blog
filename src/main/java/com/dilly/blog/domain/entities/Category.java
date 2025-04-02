@@ -30,6 +30,8 @@ public class Category {
     @OneToMany(mappedBy = "category")
     private List<Post> posts = new ArrayList<>();
 
+
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
