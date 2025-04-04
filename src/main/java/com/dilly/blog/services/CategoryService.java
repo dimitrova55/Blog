@@ -9,4 +9,6 @@ public interface CategoryService {
      * Lists all categories with their post counts.
      */
     List<Category> listCategories();
+
+    Category createCategory(Category category);
 }

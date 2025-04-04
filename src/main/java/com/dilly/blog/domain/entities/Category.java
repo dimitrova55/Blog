@@ -19,7 +19,7 @@ public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID ID;
+    private UUID id;
 
     @Column(nullable = false, unique = true)
     private String name;
@@ -36,11 +36,11 @@ public class Category {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Category category = (Category) o;
-        return Objects.equals(ID, category.ID) && Objects.equals(name, category.name);
+        return Objects.equals(id, category.id) && Objects.equals(name, category.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(ID, name);
+        return Objects.hash(id, name);
     }
 }
