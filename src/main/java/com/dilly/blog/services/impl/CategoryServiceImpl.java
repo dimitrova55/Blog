@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -32,5 +34,25 @@ public class CategoryServiceImpl implements CategoryService {
             throw new IllegalArgumentException("Category already exists with name: " + category.getName());
         }
         return categoryRepository.save(category);
+    }
+
+    @Override
+    @Transactional
+    public void deleteCategory(UUID id) {
+
+        // search the category by its "id"
+        Optional<Category> category = categoryRepository.findById(id);
+
+        // check if the category exists
+        if(category.isPresent()) {
+
+            // check if the category has associated posts
+            if(!category.get().getPosts().isEmpty()) {
+                throw new IllegalArgumentException("Category has posts associated with it.");
+            }
+
+            // System.out.println("Deleting category with id: " + id);
+            categoryRepository.deleteById(id);
+        }
     }
 }
