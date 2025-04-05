@@ -4,6 +4,7 @@ import com.dilly.blog.domain.dtos.ApiErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 @ControllerAdvice
 @Slf4j
 public class ErrorController {
+
+    /** Handles any Exception **/
 
     @ExceptionHandler(exception = Exception.class)
     public ResponseEntity<ApiErrorResponse> handleException(Exception exception){
@@ -30,6 +33,9 @@ public class ErrorController {
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+
+    /** Handles Illegal Argument Exceptions **/
+
     @ExceptionHandler(exception = IllegalArgumentException.class)
     public ResponseEntity<ApiErrorResponse> handleIllegalArgumentException (IllegalArgumentException exception){
 
@@ -41,6 +47,9 @@ public class ErrorController {
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
+
+    /** Handles Illegal State Exceptions **/
+
     @ExceptionHandler(exception = IllegalStateException.class)
     public ResponseEntity<ApiErrorResponse> handleIllegalStateException( IllegalStateException exception){
 
@@ -50,5 +59,19 @@ public class ErrorController {
                 .build();
 
         return new ResponseEntity<>(error, HttpStatus.CONFLICT);
+    }
+
+
+    /** Handles Authentication Errors **/
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ApiErrorResponse> handleBadCredentialsException(BadCredentialsException exception){
+
+        ApiErrorResponse error = ApiErrorResponse.builder()
+                .status(HttpStatus.UNAUTHORIZED.value())
+                .message("Incorrect username or password.")
+                .build();
+
+        return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
     }
 }
