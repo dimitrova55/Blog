@@ -21,16 +21,15 @@ public class AuthController {
 
     @PostMapping
     public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest loginRequest) {
-
-        UserDetails user = authenticationService.authenticate(
-                loginRequest.getEmail(), loginRequest.getPassword()
+        UserDetails userDetails = authenticationService.authenticate(
+                loginRequest.getEmail(),
+                loginRequest.getPassword()
         );
-
+        String tokenValue = authenticationService.generateToken(userDetails);
         AuthResponse authResponse = AuthResponse.builder()
-                .token(authenticationService.generateToken(user))
-                .expiresIn(86400) // 24 hours in seconds
+                .token(tokenValue)
+                .expiresIn(86400)
                 .build();
-
         return ResponseEntity.ok(authResponse);
     }
 }

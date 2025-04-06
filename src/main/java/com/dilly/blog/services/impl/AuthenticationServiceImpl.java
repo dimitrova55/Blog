@@ -25,10 +25,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final UserDetailsService userDetailsService;
 
-    @Value("{jwt.secret}")
+    @Value("${jwt.secret}")
     private String secretKey;
 
-    public final long jwtExpiryMs = 86400000L;
+    private final long jwtExpiryMs = 86400000L;
 
     @Override
     public UserDetails authenticate(String username, String password) {
@@ -43,7 +43,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public String generateToken(UserDetails userDetails) {
-        
         Map<String, Object> claims = new HashMap<>();
 
         return Jwts.builder()
@@ -67,12 +66,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
-
         return claims.getSubject();
     }
 
     private Key getSigningKey() {
-
         byte[] keyBytes = secretKey.getBytes();
         return Keys.hmacShaKeyFor(keyBytes);
     }
