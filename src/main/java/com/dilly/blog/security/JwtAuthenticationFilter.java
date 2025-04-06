@@ -22,9 +22,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final AuthenticationService authenticationService;
 
     @Override
-    protected void doFilterInternal(@NotNull HttpServletRequest request,
-                                    @NotNull HttpServletResponse response,
-                                    @NotNull FilterChain filterChain)
+    protected void doFilterInternal( HttpServletRequest request,
+                                     HttpServletResponse response,
+                                     FilterChain filterChain)
             throws ServletException, IOException {
 
         try{
@@ -37,9 +37,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 // if the token is valid, extract the user details
                 UserDetails userDetails = authenticationService.validateToken(token);
 
-
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities()
+                        userDetails,
+                        null,
+                        userDetails.getAuthorities()
                 );
 
                 // set the security context holder
