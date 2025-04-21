@@ -12,6 +12,9 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TagResponse {
+
+    // Tag response is the output to frontend
+
     private UUID id;
     private String name;
     private Integer postCount;

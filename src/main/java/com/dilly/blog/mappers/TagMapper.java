@@ -15,9 +15,11 @@ import java.util.Set;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface TagMapper {
 
+    // Tag -> TagResponse
     @Mapping(target = "postCount", source = "posts", qualifiedByName = "calculatePostCount")
     TagResponse toTagResponse(Tag tag);
 
+    // List<Tag> -> List<TagResponse>
     List<TagResponse> toTagResponseList(List<Tag> tags);
 
     @Named("calculatePostCount")
@@ -25,8 +27,7 @@ public interface TagMapper {
         if(posts == null){
             return 0;
         }
-        return (int) posts
-                .stream()
+        return (int) posts.stream()
                 .filter(post -> PostStatus.PUBLISHED.equals(post.getStatus()))
                 .count();
     }
