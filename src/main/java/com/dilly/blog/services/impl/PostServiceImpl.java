@@ -4,6 +4,7 @@ import com.dilly.blog.domain.PostStatus;
 import com.dilly.blog.domain.entities.Category;
 import com.dilly.blog.domain.entities.Post;
 import com.dilly.blog.domain.entities.Tag;
+import com.dilly.blog.domain.entities.User;
 import com.dilly.blog.repositories.CategoryRepository;
 import com.dilly.blog.repositories.PostRepository;
 import com.dilly.blog.services.CategoryService;
@@ -50,5 +51,10 @@ public class PostServiceImpl implements PostService {
 
         // if both are null
         return postRepository.findAllByStatus(PostStatus.PUBLISHED);
+    }
+
+    @Override
+    public List<Post> getDraftPost(User user) {
+        return postRepository.findAllByAuthorAndStatus(user, PostStatus.DRAFT);
     }
 }
