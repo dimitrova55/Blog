@@ -1,5 +1,6 @@
 package com.dilly.blog.services;
 
+import com.dilly.blog.domain.dtos.CreatePostRequest;
 import com.dilly.blog.domain.entities.Post;
 import com.dilly.blog.domain.entities.User;
 
@@ -12,4 +13,6 @@ public interface PostService {
     List<Post> findAllPosts(UUID categoryId, UUID tagId);
 
     List<Post> getDraftPost(User user);
+
+    Post createPost(User user, CreatePostRequest createPostRequest);
 }

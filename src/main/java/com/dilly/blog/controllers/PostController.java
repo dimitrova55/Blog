@@ -1,11 +1,13 @@
 package com.dilly.blog.controllers;
 
+import com.dilly.blog.domain.dtos.CreatePostRequestDto;
 import com.dilly.blog.domain.dtos.PostDto;
 import com.dilly.blog.domain.entities.Post;
 import com.dilly.blog.domain.entities.User;
 import com.dilly.blog.mappers.PostMapper;
 import com.dilly.blog.services.PostService;
 import com.dilly.blog.services.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -51,4 +53,10 @@ public class PostController {
 
         return ResponseEntity.ok(postDtos);
     }
+
+    @PostMapping
+    public ResponseEntity<PostDto> CreatePost(
+            @Valid @RequestBody CreatePostRequestDto createPostRequestDto,
+            @RequestAttribute UUID userId
+            )
 }
