@@ -4,6 +4,7 @@ import com.dilly.blog.domain.entities.Tag;
 import com.dilly.blog.repositories.TagRepository;
 import com.dilly.blog.services.TagService;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -73,5 +74,11 @@ public class TagServiceImpl implements TagService {
             }
                 tagRepository.deleteById(id);
         }
+    }
+
+    @Override
+    public Tag getTagById(UUID id) {
+        Optional<Tag> tag = tagRepository.findById(id);
+        return tag.orElseThrow(() -> new EntityNotFoundException("Tag not found."));
     }
 }

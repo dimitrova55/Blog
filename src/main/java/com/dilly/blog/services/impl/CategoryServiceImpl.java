@@ -4,6 +4,7 @@ import com.dilly.blog.domain.entities.Category;
 import com.dilly.blog.repositories.CategoryRepository;
 import com.dilly.blog.services.CategoryService;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,5 +55,11 @@ public class CategoryServiceImpl implements CategoryService {
             // System.out.println("Deleting category with id: " + id);
             categoryRepository.deleteById(id);
         }
+    }
+
+    @Override
+    public Category getCategoryById(UUID id) {
+        Optional<Category> category = categoryRepository.findById(id);
+        return category.orElseThrow(() -> new EntityNotFoundException("Category not found."));
     }
 }
