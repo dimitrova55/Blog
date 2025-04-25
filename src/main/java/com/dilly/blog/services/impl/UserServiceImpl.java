@@ -16,6 +16,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
+    /* GET find user by its ID */
     @Override
     public User getUserById(UUID id) {
         Optional<User> user = userRepository.findById(id);

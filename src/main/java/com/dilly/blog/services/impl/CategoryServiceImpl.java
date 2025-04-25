@@ -21,11 +21,13 @@ public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
 
+    /* GET all categories */
     @Override
     public List<Category> listCategories() {
         return categoryRepository.findAllWithPostCount();
     }
 
+    /* POST create new category */
     @Override
     @Transactional
     public Category createCategory(Category category) {
@@ -37,6 +39,7 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryRepository.save(category);
     }
 
+    /* DELETE an existing category */
     @Override
     @Transactional
     public void deleteCategory(UUID id) {
@@ -57,6 +60,7 @@ public class CategoryServiceImpl implements CategoryService {
         }
     }
 
+    /* GET category by its ID */
     @Override
     public Category getCategoryById(UUID id) {
         Optional<Category> category = categoryRepository.findById(id);

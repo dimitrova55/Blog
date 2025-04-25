@@ -1,7 +1,6 @@
 package com.dilly.blog.controllers;
 
-import com.dilly.blog.domain.dtos.CreatePostRequestDto;
-import com.dilly.blog.domain.dtos.PostDto;
+import com.dilly.blog.domain.dtos.*;
 import com.dilly.blog.domain.entities.Post;
 import com.dilly.blog.domain.entities.User;
 import com.dilly.blog.mappers.PostMapper;
@@ -9,6 +8,8 @@ import com.dilly.blog.services.PostService;
 import com.dilly.blog.services.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +26,7 @@ public class PostController {
     private final PostMapper postMapper;
     private final UserService userService;
 
+    /* GET All posts */
     @GetMapping
     public ResponseEntity<List<PostDto>> getAllPosts(
             @RequestParam(required=false) UUID categoryId,
@@ -37,6 +39,7 @@ public class PostController {
         return ResponseEntity.ok(postDtos);
     }
 
+    /* GET All draft posts */
     @GetMapping(path = "/drafts")
     public ResponseEntity<List<PostDto>> getDrafts(@RequestAttribute UUID userId){
 
@@ -54,9 +57,36 @@ public class PostController {
         return ResponseEntity.ok(postDtos);
     }
 
+    /* POST create new post */
     @PostMapping
     public ResponseEntity<PostDto> CreatePost(
             @Valid @RequestBody CreatePostRequestDto createPostRequestDto,
             @RequestAttribute UUID userId
             )
+    {
+        // get the currently logged user
+        User loggedUser = userService.getUserById(userId);
+
+        CreatePostRequest createPostRequest = postMapper.toCreatePostRequest(createPostRequestDto);
+
+        // create a new post
+        Post createdPost = postService.createPost(loggedUser, createPostRequest);
+
+        // convert the Post variable to PostDto
+        PostDto createdPostDto = postMapper.toDto(createdPost);
+
+        return new ResponseEntity<>(createdPostDto, HttpStatus.CREATED);
+    }
+
+    @PutMapping(path = "/{id}")
+    public ResponseEntity<PostDto> updatePost(
+            @PathVariable UUID postId,
+            @Valid @RequestBody UpdatePostRequestDto updatePostRequestDto
+            )
+    {
+        UpdatePostRequest updatePostRequest = postMapper.toUpdatePostRequest(updatePostRequestDto);
+        Post updatedPost = postService.updatePost(postId, updatePostRequest);
+        PostDto updatedPostDto = postMapper.toDto(updatedPost);
+        return ResponseEntity.ok(updatedPostDto);
+    }
 }

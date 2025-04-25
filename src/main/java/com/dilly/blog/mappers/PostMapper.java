@@ -1,8 +1,6 @@
 package com.dilly.blog.mappers;
 
-import com.dilly.blog.domain.dtos.CreatePostRequest;
-import com.dilly.blog.domain.dtos.CreatePostRequestDto;
-import com.dilly.blog.domain.dtos.PostDto;
+import com.dilly.blog.domain.dtos.*;
 import com.dilly.blog.domain.entities.Post;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -18,4 +16,5 @@ public interface PostMapper {
     PostDto toDto(Post post);
 
     CreatePostRequest toCreatePostRequest(CreatePostRequestDto dto);
+    UpdatePostRequest toUpdatePostRequest(UpdatePostRequestDto dto);
 }

@@ -20,11 +20,13 @@ public class TagServiceImpl implements TagService {
     private final TagRepository tagRepository;
 
 
+    /* GET all tags*/
     @Override
     public List<Tag> getAllTags() {
         return tagRepository.findAllWithPostCount();
     }
 
+    /* POST create new tags */
     @Override
     @Transactional
     public List<Tag> createTags(Set<String> tagNames) {
@@ -63,6 +65,7 @@ public class TagServiceImpl implements TagService {
         return savedTags;
     }
 
+    /* DELETE an existing tag */
     @Override
     @Transactional
     public void deleteTag(UUID id) {
@@ -76,12 +79,14 @@ public class TagServiceImpl implements TagService {
         }
     }
 
+    /* GET tag by its ID */
     @Override
     public Tag getTagById(UUID id) {
         Optional<Tag> tag = tagRepository.findById(id);
         return tag.orElseThrow(() -> new EntityNotFoundException("Tag not found."));
     }
 
+    /* GET tags by theirs IDs */
     @Override
     public List<Tag> getTagByIds(Set<UUID> tagIds) {
         /**
