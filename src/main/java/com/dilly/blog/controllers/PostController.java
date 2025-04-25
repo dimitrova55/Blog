@@ -78,6 +78,7 @@ public class PostController {
         return new ResponseEntity<>(createdPostDto, HttpStatus.CREATED);
     }
 
+    /* PUT update post */
     @PutMapping(path = "/{id}")
     public ResponseEntity<PostDto> updatePost(
             @PathVariable UUID postId,
@@ -88,5 +89,22 @@ public class PostController {
         Post updatedPost = postService.updatePost(postId, updatePostRequest);
         PostDto updatedPostDto = postMapper.toDto(updatedPost);
         return ResponseEntity.ok(updatedPostDto);
+    }
+
+    /* GET post by ID */
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<PostDto> getPost(@PathVariable UUID postId)
+    {
+        Post post = postService.getPost(postId);
+        PostDto postDto = postMapper.toDto(post);
+
+        return ResponseEntity.ok(postDto);
+    }
+
+    /* DELETE post by ID */
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<Void> deletePost(@PathVariable UUID postId){
+        postService.deletePost(postId);
+        return ResponseEntity.noContent().build();
     }
 }

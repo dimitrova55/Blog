@@ -17,10 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -70,6 +67,7 @@ public class PostServiceImpl implements PostService {
 
     /** POST create a post **/
     @Override
+    @Transactional
     public Post createPost(User user, CreatePostRequest createPostRequest) {
 
         // create new object of type Post and populate it
@@ -92,6 +90,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @Transactional
     public Post updatePost(UUID postId, UpdatePostRequest updatePostRequest) {
 
         // check if the post exists in the database
@@ -129,6 +128,23 @@ public class PostServiceImpl implements PostService {
         }
 
         return postRepository.save(existingPost);
+    }
+
+    @Override
+    public Post getPost(UUID postId) {
+        return postRepository.findById(postId)
+                .orElseThrow(
+                        () -> new EntityNotFoundException("The post cannot be found.")
+                );
+    }
+
+
+    /* DELETE post by ID */
+    @Override
+    @Transactional
+    public void deletePost(UUID postId) {
+        Post post = getPost(postId);
+        postRepository.delete(post);
     }
 
     private Integer calculateReadingTime(String content){
