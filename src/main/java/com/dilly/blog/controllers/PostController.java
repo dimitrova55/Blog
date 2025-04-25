@@ -59,7 +59,7 @@ public class PostController {
 
     /* POST create new post */
     @PostMapping
-    public ResponseEntity<PostDto> CreatePost(
+    public ResponseEntity<PostDto> createPost(
             @Valid @RequestBody CreatePostRequestDto createPostRequestDto,
             @RequestAttribute UUID userId
             )
@@ -81,21 +81,21 @@ public class PostController {
     /* PUT update post */
     @PutMapping(path = "/{id}")
     public ResponseEntity<PostDto> updatePost(
-            @PathVariable UUID postId,
+            @PathVariable UUID id,
             @Valid @RequestBody UpdatePostRequestDto updatePostRequestDto
             )
     {
         UpdatePostRequest updatePostRequest = postMapper.toUpdatePostRequest(updatePostRequestDto);
-        Post updatedPost = postService.updatePost(postId, updatePostRequest);
+        Post updatedPost = postService.updatePost(id, updatePostRequest);
         PostDto updatedPostDto = postMapper.toDto(updatedPost);
         return ResponseEntity.ok(updatedPostDto);
     }
 
     /* GET post by ID */
     @GetMapping(path = "/{id}")
-    public ResponseEntity<PostDto> getPost(@PathVariable UUID postId)
+    public ResponseEntity<PostDto> getPost(@PathVariable UUID id)
     {
-        Post post = postService.getPost(postId);
+        Post post = postService.getPost(id);
         PostDto postDto = postMapper.toDto(post);
 
         return ResponseEntity.ok(postDto);
@@ -103,8 +103,8 @@ public class PostController {
 
     /* DELETE post by ID */
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<Void> deletePost(@PathVariable UUID postId){
-        postService.deletePost(postId);
+    public ResponseEntity<Void> deletePost(@PathVariable UUID id){
+        postService.deletePost(id);
         return ResponseEntity.noContent().build();
     }
 }
