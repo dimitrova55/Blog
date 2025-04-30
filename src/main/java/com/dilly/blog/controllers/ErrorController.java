@@ -38,7 +38,9 @@ public class ErrorController {
     /** Handles Illegal Argument Exceptions **/
 
     @ExceptionHandler(exception = IllegalArgumentException.class)
-    public ResponseEntity<ApiErrorResponse> handleIllegalArgumentException (IllegalArgumentException exception){
+    public ResponseEntity<ApiErrorResponse> handleIllegalArgumentException (
+            IllegalArgumentException exception)
+    {
 
         ApiErrorResponse error = ApiErrorResponse.builder()
                 .status(HttpStatus.BAD_REQUEST.value())

@@ -89,6 +89,7 @@ public class PostServiceImpl implements PostService {
         return postRepository.save(newPost);
     }
 
+    /* PUT update an existing post */
     @Override
     @Transactional
     public Post updatePost(UUID postId, UpdatePostRequest updatePostRequest) {
